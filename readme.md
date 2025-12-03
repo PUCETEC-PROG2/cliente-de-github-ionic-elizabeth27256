@@ -3,7 +3,7 @@
 
 ## Información del Estudiante
 
-- **Nombre:** [Tu nombre completo aquí]
+- **Nombre:** Briithany Elizabeth Mites Sosa
 - **Carrera:** [Tu carrera]
 - **Fecha de inicio:** [Fecha]
 
