@@ -1,9 +1,31 @@
-import React from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { IonItem, IonLabel, IonList } from '@ionic/react';
-import './Tab1.css';
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  useIonViewDidEnter,
+} from "@ionic/react";
+import { IonList } from "@ionic/react";
+import "./Tab1.css";
+import RepoItem from "../components/RepoItem";
+import React from "react";
+import { RepositoryItem } from "../interfaces/RepositoryItem";
+import { fetchRepositories } from "../services/GithubSevice";
 
 const Tab1: React.FC = () => {
+  const [repos, setRepos] = React.useState<RepositoryItem[]>([]);
+
+  const loadRepos = async () => {
+    const reposData = await fetchRepositories();
+    setRepos(reposData);
+  };
+
+  useIonViewDidEnter(() => {
+    console.log("******* Leyendo repositorios ... *******");
+    loadRepos();
+  });
+
   return (
     <IonPage>
       <IonHeader>
@@ -12,25 +34,22 @@ const Tab1: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+        <IonHeader collapse="condense">
+          <IonToolbar>
+            <IonTitle size="large">Repositorios</IonTitle>
+          </IonToolbar>
+        </IonHeader>
         <IonList>
-          <IonItem>
-            <IonLabel>Pokémon Yellow</IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Mega Man X</IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonLabel>The Legend of Zelda</IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Pac-Man</IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Super Mario World</IonLabel>
-          </IonItem>
-        </IonList>
-        <IonList>
-          
+          {repos.map((repo, index) => (
+            <RepoItem
+              key={index}
+              name={repo.name}
+              description={repo.description}
+              imageUrl={repo.imageUrl}
+              owner={repo.owner}
+              language={repo.language}
+            />
+          ))}
         </IonList>
       </IonContent>
     </IonPage>
